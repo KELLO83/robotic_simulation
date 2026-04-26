@@ -1,6 +1,6 @@
 
 ### ⚠️ Project Status: Unmaintained
-This project is not being actively maintained. It can however still serve as a reference point for similar project.
+This project is not being actively maintained. It can however still serve as a reference point for similar projects.
 
 # Mobile Robot DRL Navigation
 
