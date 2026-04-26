@@ -1,14 +1,15 @@
+
+### ⚠️ Project Status: Unmaintained
+This project is not being actively maintained. It can however still serve as a reference point for similar project.
+
 # Mobile Robot DRL Navigation
 
 ### A ROS2 framework for DRL autonomous navigation on mobile robots with LiDAR.
+
 <p float="left">
  <img src="media/simulation.gif" width="400">
  <img src="media/physical_demo.gif" width="216" alt="physical_demo.gif" />
 </p>
-
-⚠️ Project Status: Unmaintained
-This project is not being actively maintained. It can however still serve as a reference point for similar project.
-
 
 # **Table of contents**
 * [Introduction](#introduction)
