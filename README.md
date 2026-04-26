@@ -6,6 +6,9 @@
  <img src="media/physical_demo.gif" width="216" alt="physical_demo.gif" />
 </p>
 
+⚠️ Project Status: Unmaintained
+This project is not being actively maintained. It can however still serve as a reference point for similar project.
+
 
 # **Table of contents**
 * [Introduction](#introduction)
