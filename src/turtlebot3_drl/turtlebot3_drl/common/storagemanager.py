@@ -2,6 +2,7 @@ from collections import deque
 import os
 import io
 import pickle
+import re
 import socket
 import torch
 
@@ -15,7 +16,11 @@ class StorageManager:
         if 'examples' in load_session:
             self.machine_dir = (os.getenv('DRLNAV_BASE_PATH') + '/src/turtlebot3_drl/model/')
         self.name = name
-        self.stage = load_session[-1] if load_session else stage
+        self.stage = stage
+        if load_session:
+            stage_match = re.search(r'_stage_?(\d+)$', load_session)
+            if stage_match:
+                self.stage = int(stage_match.group(1))
         self.session = load_session
         self.load_episode = load_episode
         self.session_dir = os.path.join(self.machine_dir, self.session)
@@ -73,7 +78,8 @@ class StorageManager:
     def network_load_weights(self, network, model_dir, stage, episode):
         filepath = os.path.join(model_dir, str(network.name) + '_stage'+str(stage)+'_episode'+str(episode)+'.pt')
         print(f"loading: {network.name} model from file: {filepath}")
-        network.load_state_dict(torch.load(filepath, self.map_location))
+        state_dict = torch.load(filepath, map_location=self.map_location, weights_only=True)
+        network.load_state_dict(state_dict)
 
     def load_graphdata(self):
         with open(os.path.join(self.session_dir, 'stage'+str(self.stage)+'_episode'+str(self.load_episode)+'.pkl'), 'rb') as f:
@@ -106,6 +112,10 @@ class CpuUnpickler(pickle.Unpickler):
         super(CpuUnpickler, self).__init__(file)
     def find_class(self, module, name):
         if module == 'torch.storage' and name == '_load_from_bytes':
-            return lambda b: torch.load(io.BytesIO(b), map_location=self.map_location)
+            return lambda b: torch.load(
+                io.BytesIO(b),
+                map_location=self.map_location,
+                weights_only=False,
+            )
         else:
             return super().find_class(module, name)

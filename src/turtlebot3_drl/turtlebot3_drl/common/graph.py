@@ -2,16 +2,17 @@ import os
 import numpy as np
 
 import matplotlib
+if os.environ.get('DISPLAY'):
+    matplotlib.use('TkAgg')
+else:
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from turtlebot3_drl.drl_environment.reward import SUCCESS
 from .settings import GRAPH_DRAW_INTERVAL, GRAPH_AVERAGE_REWARD
 from matplotlib.ticker import MaxNLocator
 
-matplotlib.use('TkAgg')
 class Graph():
     def __init__(self):
-        plt.show()
-
         self.session_dir = ""
         self.legend_labels = ['Unknown', 'Success', 'Collision Wall', 'Collision Dynamic', 'Timeout', 'Tumble']
         self.legend_colors = ['b', 'g', 'r', 'c', 'm', 'y']
@@ -27,6 +28,7 @@ class Graph():
 
         self.fig, self.ax = plt.subplots(2, 2)
         self.fig.set_size_inches(18.5, 10.5)
+        plt.show(block=False)
 
         titles = ['outcomes', 'avg critic loss over episode', 'avg actor loss over episode', 'avg reward over 10 episodes']
         for i in range(4):

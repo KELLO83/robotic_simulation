@@ -30,7 +30,12 @@ from turtlebot3_msgs.srv import DrlStep, Goal, RingGoal
 
 import rclpy
 from rclpy.node import Node
-from rclpy.qos import QoSProfile, qos_profile_sensor_data
+from rclpy.qos import (
+    QoSDurabilityPolicy,
+    QoSProfile,
+    QoSReliabilityPolicy,
+    qos_profile_sensor_data,
+)
 
 from . import reward as rw
 from ..common import utilities as util
@@ -88,11 +93,12 @@ class DRLEnvironment(Node):
         ** Initialise ROS publishers and subscribers
         ************************************************************"""
         qos = QoSProfile(depth=10)
-        qos_clock = QoSProfile(depth=1)
+        qos_clock = QoSProfile(depth=1, reliability=QoSReliabilityPolicy.BEST_EFFORT)
+        qos_goal = QoSProfile(depth=1, durability=QoSDurabilityPolicy.TRANSIENT_LOCAL)
         # publishers
         self.cmd_vel_pub = self.create_publisher(Twist, self.velo_topic, qos)
         # subscribers
-        self.goal_pose_sub = self.create_subscription(Pose, self.goal_topic, self.goal_pose_callback, qos)
+        self.goal_pose_sub = self.create_subscription(Pose, self.goal_topic, self.goal_pose_callback, qos_goal)
         self.odom_sub = self.create_subscription(Odometry, self.odom_topic, self.odom_callback, qos)
         self.scan_sub = self.create_subscription(LaserScan, self.scan_topic, self.scan_callback, qos_profile=qos_profile_sensor_data)
         self.clock_sub = self.create_subscription(Clock, '/clock', self.clock_callback, qos_profile=qos_clock)

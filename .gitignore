@@ -1,6 +1,96 @@
-*_latest_buffer.pkl
-.vscode/
+# ROS 2 / colcon generated output
 build/
 install/
 log/
-tmux*
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# Downloaded/installed dependencies and Python package output
+.local_ros_deps/
+site-packages/
+dist-packages/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+dist/
+sdist/
+wheels/
+node_modules/
+.env
+.env.*
+!.env.example
+
+# CMake / native build byproducts
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+CTestConfiguration.ini
+CTestCustom.cmake
+Makefile
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# ROS / Gazebo / simulation runtime files
+.ros/
+*.bag
+*.db3
+*.mcap
+*.log
+*.pid
+*.tmp
+*.swp
+*.swo
+*.bak
+core
+
+# Training artifacts and large generated data
+checkpoints/
+checkpoint/
+runs/
+wandb/
+tensorboard/
+weights/
+*.pt
+*.pth
+*.onnx
+*.ckpt
+*.pkl
+*.pickle
+*.npy
+*.npz
+
+# Local training/evaluation outputs and generated plugin binaries
+src/turtlebot3_drl/model/
+src/turtlebot3_simulations/turtlebot3_gazebo/models/turtlebot3_drl_world/obstacle_plugin/lib/
+/media/
+/image*.png
+
+# Editor and OS metadata
+.vscode/
+.idea/
+*.code-workspace
+.DS_Store
+Thumbs.db
+
+# Local agent/runtime metadata
+.agents/
+.codex/
+
+# Alternate Git directory used when the workspace .git mount is read-only
+.git-main/

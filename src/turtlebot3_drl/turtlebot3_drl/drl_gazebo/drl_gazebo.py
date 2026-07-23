@@ -22,12 +22,13 @@ import math
 import numpy
 import time
 
+from ament_index_python.packages import get_package_share_directory
 from gazebo_msgs.srv import DeleteEntity, SpawnEntity
 from std_srvs.srv import Empty
 from geometry_msgs.msg import Pose
 
 import rclpy
-from rclpy.qos import QoSProfile
+from rclpy.qos import QoSDurabilityPolicy, QoSProfile
 from rclpy.node import Node
 
 from turtlebot3_msgs.srv import RingGoal
@@ -44,9 +45,12 @@ class DRLGazebo(Node):
         ** Initialise variables
         ************************************************************"""
 
-        self.entity_dir_path = (os.path.dirname(os.path.realpath(__file__))).replace(
-            'turtlebot3_drl/lib/python3.8/site-packages/turtlebot3_drl/drl_gazebo',
-            'turtlebot3_gazebo/share/turtlebot3_gazebo/models/turtlebot3_drl_world/goal_box')
+        self.entity_dir_path = os.path.join(
+            get_package_share_directory('turtlebot3_gazebo'),
+            'models',
+            'turtlebot3_drl_world',
+            'goal_box',
+        )
         self.entity_path = os.path.join(self.entity_dir_path, 'model.sdf')
         self.entity = open(self.entity_path, 'r').read()
         self.entity_name = 'goal'
@@ -62,7 +66,8 @@ class DRLGazebo(Node):
         ** Initialise ROS publishers, subscribers and clients
         ************************************************************"""
         # Initialise publishers
-        self.goal_pose_pub = self.create_publisher(Pose, 'goal_pose', QoSProfile(depth=10))
+        goal_qos = QoSProfile(depth=1, durability=QoSDurabilityPolicy.TRANSIENT_LOCAL)
+        self.goal_pose_pub = self.create_publisher(Pose, 'goal_pose', goal_qos)
 
         # Initialise client
         self.delete_entity_client       = self.create_client(DeleteEntity, 'delete_entity')
